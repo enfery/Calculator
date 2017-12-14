@@ -3,18 +3,33 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using System.Linq;
 
 public class calculator : MonoBehaviour {
 
 	[SerializeField]
 	Text outputTextField;
-	private string buttonValue;
+	private string s_valueB;
+	private int valueA;
+	private int valueB;
+	private bool isOperation = false;
+	private bool isOperationFirstTime = false;
 
 	public void ButtonPressed()
 	{
-		Debug.Log (EventSystem.current.currentSelectedGameObject.name);
-		buttonValue = EventSystem.current.currentSelectedGameObject.name;
-		outputTextField.text += buttonValue;
+		if (isOperation) {
+
+			if (isOperationFirstTime) 
+			{
+				outputTextField.text += "\n";
+				isOperationFirstTime = false;
+			}
+			s_valueB += EventSystem.current.currentSelectedGameObject.name;
+
+		} 
+
+		outputTextField.text += EventSystem.current.currentSelectedGameObject.name;
+
 	}
 
 	public void ApplicationExit()
@@ -25,5 +40,22 @@ public class calculator : MonoBehaviour {
 	public void ClearOut()
 	{
 		outputTextField.text = "";
+	}
+
+	public void Addition()
+	{
+		
+		int.TryParse (outputTextField.text, out valueA);
+		outputTextField.text += " + ";
+		isOperation = true;
+		isOperationFirstTime = true;
+	}
+
+	public void EqualSign()
+	{
+		int.TryParse (s_valueB, out valueB);
+		valueA = valueA + valueB;
+		outputTextField.text = valueA.ToString();
+		isOperation = false;
 	}
 }
