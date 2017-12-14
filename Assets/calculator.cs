@@ -9,11 +9,17 @@ public class calculator : MonoBehaviour {
 
 	[SerializeField]
 	Text outputTextField;
+
 	private string s_valueB;
+
 	private int valueA;
 	private int valueB;
+	// 1 + 2 - 3 / 4 *
+	private int operationNum = 0;
+
 	private bool isOperation = false;
 	private bool isOperationFirstTime = false;
+
 
 	public void ButtonPressed()
 	{
@@ -42,20 +48,52 @@ public class calculator : MonoBehaviour {
 		outputTextField.text = "";
 	}
 
-	public void Addition()
+	private void OperationStart()
 	{
-		
+		if (isOperation) 
+		{
+			EqualSign ();
+		}
 		int.TryParse (outputTextField.text, out valueA);
-		outputTextField.text += " + ";
 		isOperation = true;
 		isOperationFirstTime = true;
+	}
+
+	public void Addition()
+	{
+		OperationStart ();
+		outputTextField.text += " + ";
+		operationNum = 1;
+	}
+
+	public void Subtraction()
+	{
+		OperationStart ();
+		outputTextField.text += " - ";
+		operationNum = 2;
+
 	}
 
 	public void EqualSign()
 	{
 		int.TryParse (s_valueB, out valueB);
-		valueA = valueA + valueB;
+		Debug.Log ("valueA = " + valueA + " valueB = " + valueB);
+		switch (operationNum) 
+		{
+		case 1:
+			valueA = valueA + valueB;
+			break;
+		case 2:
+			valueA = valueA - valueB;
+			break;
+		default:
+			Debug.Log ("Not yet soz");
+			break;
+		}
 		outputTextField.text = valueA.ToString();
 		isOperation = false;
+		s_valueB = "";
+
 	}
+		
 }
