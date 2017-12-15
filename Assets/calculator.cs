@@ -12,8 +12,9 @@ public class calculator : MonoBehaviour {
 
 	private string s_valueB;
 
-	private int valueA;
-	private int valueB;
+	private float tryVar;
+	private float valueA;
+	private float valueB;
 	// 1 + 2 - 3 / 4 *
 	private int operationNum = 0;
 
@@ -54,7 +55,7 @@ public class calculator : MonoBehaviour {
 		{
 			EqualSign ();
 		}
-		int.TryParse (outputTextField.text, out valueA);
+		valueA = System.Single.Parse (outputTextField.text);
 		isOperation = true;
 		isOperationFirstTime = true;
 	}
@@ -74,9 +75,23 @@ public class calculator : MonoBehaviour {
 
 	}
 
+	public void Division()
+	{
+		OperationStart ();
+		outputTextField.text += " / ";
+		operationNum = 3;
+	}
+
+	public void Multiply()
+	{
+		OperationStart ();
+		outputTextField.text += " * ";
+		operationNum = 4;
+	}
+
 	public void EqualSign()
 	{
-		int.TryParse (s_valueB, out valueB);
+		valueB = System.Single.Parse(s_valueB);
 		Debug.Log ("valueA = " + valueA + " valueB = " + valueB);
 		switch (operationNum) 
 		{
@@ -85,6 +100,12 @@ public class calculator : MonoBehaviour {
 			break;
 		case 2:
 			valueA = valueA - valueB;
+			break;
+		case 3:
+			valueA = valueA / valueB;
+			break;
+		case 4:
+			valueA = valueA * valueB;
 			break;
 		default:
 			Debug.Log ("Not yet soz");
